@@ -9,9 +9,6 @@ uploads/
 # Log file
 logs
 
-# Markdown files (temporary)
-*.md
-
 # C extensions
 *.so
 
