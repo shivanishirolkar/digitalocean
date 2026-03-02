@@ -1,0 +1,320 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1420" font-family="'Courier New', Courier, monospace">
+  <defs>
+    <style>
+      .title { font-family: Georgia, serif; font-size: 22px; font-weight: bold; fill: #E2E8F0; }
+      .subtitle { font-size: 11px; fill: #4A5568; letter-spacing: 2px; }
+      .section-label { font-size: 10px; fill: #4A5568; letter-spacing: 2px; }
+      .endpoint-path { font-size: 12px; fill: #A0AEC0; }
+      .endpoint-name { font-size: 12px; font-weight: bold; fill: #CBD5E0; }
+      .response-code { font-size: 11px; font-weight: bold; }
+      .response-label { font-size: 11px; font-weight: bold; }
+      .response-detail { font-size: 10px; fill: #718096; }
+      .method-text { font-size: 10px; font-weight: bold; letter-spacing: 1px; }
+      .note-text { font-size: 10px; fill: #D69E2E; }
+      .legend-text { font-size: 10px; fill: #718096; }
+      .step-text { font-size: 10px; fill: #718096; }
+      .step-num { font-size: 10px; fill: #4A5568; }
+      .token-title { font-size: 10px; letter-spacing: 2px; fill: #4A5568; }
+      .token-code { font-size: 10px; fill: #667EEA; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="1420" fill="#0A0C14"/>
+
+  <!-- Header -->
+  <text x="40" y="54" class="title">Secure File Service</text>
+  <text x="40" y="74" class="subtitle">API FLOW DIAGRAM — HAPPY PATH &amp; ERROR PATHS</text>
+
+  <!-- Divider -->
+  <line x1="40" y1="90" x2="960" y2="90" stroke="#1A1E2E" stroke-width="1"/>
+
+  <!-- ─── COLUMN HEADERS ─── -->
+  <text x="40" y="118" class="section-label">── PROTECTED  (X-API-Key required)</text>
+  <text x="560" y="118" class="section-label">── RESPONSES</text>
+
+  <!-- ═══════════════════════════════════════
+       ENDPOINT 1: POST /files  (Upload)
+  ═══════════════════════════════════════ -->
+  <!-- Endpoint card -->
+  <rect x="40" y="130" width="480" height="60" rx="5" fill="#12151F" stroke="#1E2130" stroke-width="1"/>
+  <rect x="40" y="130" width="52" height="60" rx="5" fill="#81C78422"/>
+  <rect x="86" y="130" width="6" height="60" fill="#12151F"/>
+  <text x="66" y="158" class="method-text" fill="#81C784" text-anchor="middle">POST</text>
+  <text x="108" y="151" class="endpoint-name">Upload File</text>
+  <text x="108" y="169" class="endpoint-path">/files</text>
+
+  <!-- Happy -->
+  <rect x="560" y="130" width="400" height="28" rx="4" fill="#00D4AA0D" stroke="#00D4AA22" stroke-width="1"/>
+  <text x="572" y="149" class="response-code" fill="#00D4AA">201</text>
+  <text x="608" y="149" class="response-label" fill="#00D4AA">Created</text>
+  <text x="672" y="149" class="response-detail">{ id, user_id, filename, size_bytes, content_type, uploaded_at }</text>
+  <!-- Errors -->
+  <rect x="560" y="164" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="179" class="response-code" fill="#FF5C5C">401</text>
+  <text x="608" y="179" class="response-label" fill="#FF8A8A">Unauthorized</text>
+  <text x="700" y="179" class="response-detail">Missing or invalid API key</text>
+  <rect x="560" y="188" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="203" class="response-code" fill="#FF5C5C">413</text>
+  <text x="608" y="203" class="response-label" fill="#FF8A8A">Too Large</text>
+  <text x="680" y="203" class="response-detail">File exceeds 10 MB limit</text>
+  <rect x="560" y="212" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="227" class="response-code" fill="#FF5C5C">422</text>
+  <text x="608" y="227" class="response-label" fill="#FF8A8A">Unprocessable</text>
+  <text x="706" y="227" class="response-detail">Missing file or user_id field</text>
+  <!-- Connector -->
+  <line x1="520" y1="160" x2="556" y2="160" stroke="#1E2540" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ═══════════════════════════════════════
+       ENDPOINT 2: GET /files  (List)
+  ═══════════════════════════════════════ -->
+  <rect x="40" y="248" width="480" height="60" rx="5" fill="#12151F" stroke="#1E2130" stroke-width="1"/>
+  <rect x="40" y="248" width="52" height="60" rx="5" fill="#4FC3F722"/>
+  <rect x="86" y="248" width="6" height="60" fill="#12151F"/>
+  <text x="66" y="276" class="method-text" fill="#4FC3F7" text-anchor="middle">GET</text>
+  <text x="108" y="269" class="endpoint-name">List Files</text>
+  <text x="108" y="287" class="endpoint-path">/files?user_id=…&amp;page=1&amp;page_size=10</text>
+
+  <rect x="560" y="248" width="400" height="28" rx="4" fill="#00D4AA0D" stroke="#00D4AA22" stroke-width="1"/>
+  <text x="572" y="267" class="response-code" fill="#00D4AA">200</text>
+  <text x="608" y="267" class="response-label" fill="#00D4AA">OK</text>
+  <text x="640" y="267" class="response-detail">{ items[], total, page, page_size }</text>
+  <rect x="560" y="280" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="295" class="response-code" fill="#FF5C5C">401</text>
+  <text x="608" y="295" class="response-label" fill="#FF8A8A">Unauthorized</text>
+  <text x="700" y="295" class="response-detail">Missing or invalid API key</text>
+  <line x1="520" y1="278" x2="556" y2="278" stroke="#1E2540" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ═══════════════════════════════════════
+       ENDPOINT 3: GET /files/:id  (Metadata)
+  ═══════════════════════════════════════ -->
+  <rect x="40" y="358" width="480" height="60" rx="5" fill="#12151F" stroke="#1E2130" stroke-width="1"/>
+  <rect x="40" y="358" width="52" height="60" rx="5" fill="#4FC3F722"/>
+  <rect x="86" y="358" width="6" height="60" fill="#12151F"/>
+  <text x="66" y="386" class="method-text" fill="#4FC3F7" text-anchor="middle">GET</text>
+  <text x="108" y="379" class="endpoint-name">File Metadata</text>
+  <text x="108" y="397" class="endpoint-path">/files/:id</text>
+
+  <rect x="560" y="358" width="400" height="28" rx="4" fill="#00D4AA0D" stroke="#00D4AA22" stroke-width="1"/>
+  <text x="572" y="377" class="response-code" fill="#00D4AA">200</text>
+  <text x="608" y="377" class="response-label" fill="#00D4AA">OK</text>
+  <text x="640" y="377" class="response-detail">{ id, user_id, filename, size_bytes, content_type, uploaded_at }</text>
+  <rect x="560" y="390" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="405" class="response-code" fill="#FF5C5C">401</text>
+  <text x="608" y="405" class="response-label" fill="#FF8A8A">Unauthorized</text>
+  <text x="700" y="405" class="response-detail">Missing or invalid API key</text>
+  <rect x="560" y="414" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="429" class="response-code" fill="#FF5C5C">404</text>
+  <text x="608" y="429" class="response-label" fill="#FF8A8A">Not Found</text>
+  <text x="680" y="429" class="response-detail">File does not exist</text>
+  <line x1="520" y1="388" x2="556" y2="388" stroke="#1E2540" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ═══════════════════════════════════════
+       ENDPOINT 4: DELETE /files/:id
+  ═══════════════════════════════════════ -->
+  <rect x="40" y="454" width="480" height="60" rx="5" fill="#12151F" stroke="#1E2130" stroke-width="1"/>
+  <rect x="40" y="454" width="52" height="60" rx="5" fill="#EF9A9A22"/>
+  <rect x="86" y="454" width="6" height="60" fill="#12151F"/>
+  <text x="66" y="482" class="method-text" fill="#EF9A9A" text-anchor="middle">DEL</text>
+  <text x="108" y="475" class="endpoint-name">Delete File</text>
+  <text x="108" y="493" class="endpoint-path">/files/:id?user_id=…</text>
+
+  <rect x="560" y="454" width="400" height="28" rx="4" fill="#00D4AA0D" stroke="#00D4AA22" stroke-width="1"/>
+  <text x="572" y="473" class="response-code" fill="#00D4AA">204</text>
+  <text x="608" y="473" class="response-label" fill="#00D4AA">No Content</text>
+  <text x="690" y="473" class="response-detail">Record + file on disk permanently removed</text>
+  <rect x="560" y="486" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="501" class="response-code" fill="#FF5C5C">401</text>
+  <text x="608" y="501" class="response-label" fill="#FF8A8A">Unauthorized</text>
+  <text x="700" y="501" class="response-detail">Missing or invalid API key</text>
+  <rect x="560" y="510" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="525" class="response-code" fill="#FF5C5C">403</text>
+  <text x="608" y="525" class="response-label" fill="#FF8A8A">Forbidden</text>
+  <text x="680" y="525" class="response-detail">user_id does not own this file</text>
+  <rect x="560" y="534" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="549" class="response-code" fill="#FF5C5C">404</text>
+  <text x="608" y="549" class="response-label" fill="#FF8A8A">Not Found</text>
+  <text x="680" y="549" class="response-detail">File does not exist</text>
+  <line x1="520" y1="484" x2="556" y2="484" stroke="#1E2540" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ═══════════════════════════════════════
+       ENDPOINT 5: POST /files/:id/sign
+  ═══════════════════════════════════════ -->
+  <rect x="40" y="574" width="480" height="60" rx="5" fill="#12151F" stroke="#1E2130" stroke-width="1"/>
+  <rect x="40" y="574" width="52" height="60" rx="5" fill="#81C78422"/>
+  <rect x="86" y="574" width="6" height="60" fill="#12151F"/>
+  <text x="66" y="602" class="method-text" fill="#81C784" text-anchor="middle">POST</text>
+  <text x="108" y="595" class="endpoint-name">Generate Signed URL</text>
+  <text x="108" y="613" class="endpoint-path">/files/:id/sign</text>
+  <!-- Side effect dot -->
+  <circle cx="460" cy="604" r="5" fill="#FFB347"/>
+  <text x="470" y="608" class="note-text">side effect</text>
+
+  <rect x="560" y="574" width="400" height="28" rx="4" fill="#00D4AA0D" stroke="#00D4AA22" stroke-width="1"/>
+  <text x="572" y="593" class="response-code" fill="#00D4AA">201</text>
+  <text x="608" y="593" class="response-label" fill="#00D4AA">Created</text>
+  <text x="655" y="593" class="response-detail">{ download_url, expires_at }</text>
+  <!-- side effect note -->
+  <rect x="560" y="606" width="400" height="18" rx="3" fill="#FFB34708" stroke="#FFB34733" stroke-width="1"/>
+  <text x="572" y="619" font-size="10" fill="#FFB347">⚡ Audit event recorded in signed_url_audit table</text>
+  <rect x="560" y="628" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="643" class="response-code" fill="#FF5C5C">401</text>
+  <text x="608" y="643" class="response-label" fill="#FF8A8A">Unauthorized</text>
+  <text x="700" y="643" class="response-detail">Missing or invalid API key</text>
+  <rect x="560" y="652" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="667" class="response-code" fill="#FF5C5C">403</text>
+  <text x="608" y="667" class="response-label" fill="#FF8A8A">Forbidden</text>
+  <text x="680" y="667" class="response-detail">user_id does not own this file</text>
+  <rect x="560" y="676" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="691" class="response-code" fill="#FF5C5C">404</text>
+  <text x="608" y="691" class="response-label" fill="#FF8A8A">Not Found</text>
+  <text x="680" y="691" class="response-detail">File does not exist</text>
+  <rect x="560" y="700" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="715" class="response-code" fill="#FF5C5C">422</text>
+  <text x="608" y="715" class="response-label" fill="#FF8A8A">Unprocessable</text>
+  <text x="706" y="715" class="response-detail">TTL out of range (60–86400s)</text>
+  <line x1="520" y1="604" x2="556" y2="604" stroke="#1E2540" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ─── PUBLIC SECTION ─── -->
+  <line x1="40" y1="742" x2="960" y2="742" stroke="#1A1E2E" stroke-width="1"/>
+  <text x="40" y="762" class="section-label">── PUBLIC  (no authentication required)</text>
+
+  <!-- ═══════════════════════════════════════
+       ENDPOINT 6: GET /download  (Public)
+  ═══════════════════════════════════════ -->
+  <rect x="40" y="774" width="480" height="60" rx="5" fill="#12151F" stroke="#7B8CFF44" stroke-width="1"/>
+  <rect x="40" y="774" width="52" height="60" rx="5" fill="#7B8CFF22"/>
+  <rect x="86" y="774" width="6" height="60" fill="#12151F"/>
+  <text x="66" y="802" class="method-text" fill="#7B8CFF" text-anchor="middle">GET</text>
+  <text x="108" y="795" class="endpoint-name">Download File  <tspan fill="#7B8CFF" font-size="10">PUBLIC</tspan></text>
+  <text x="108" y="813" class="endpoint-path">/download?token=&lt;signed_token&gt;</text>
+
+  <rect x="560" y="774" width="400" height="28" rx="4" fill="#00D4AA0D" stroke="#00D4AA22" stroke-width="1"/>
+  <text x="572" y="793" class="response-code" fill="#00D4AA">200</text>
+  <text x="608" y="793" class="response-label" fill="#00D4AA">OK</text>
+  <text x="640" y="793" class="response-detail">Binary stream — Content-Type + Content-Disposition</text>
+  <rect x="560" y="806" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="821" class="response-code" fill="#FF5C5C">403</text>
+  <text x="608" y="821" class="response-label" fill="#FF8A8A">Forbidden</text>
+  <text x="680" y="821" class="response-detail">HMAC signature invalid or tampered</text>
+  <rect x="560" y="830" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="845" class="response-code" fill="#FF5C5C">404</text>
+  <text x="608" y="845" class="response-label" fill="#FF8A8A">Not Found</text>
+  <text x="680" y="845" class="response-detail">File missing from disk</text>
+  <rect x="560" y="854" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="869" class="response-code" fill="#FF5C5C">410</text>
+  <text x="608" y="869" class="response-label" fill="#FF8A8A">Gone</text>
+  <text x="655" y="869" class="response-detail">Token has expired</text>
+  <line x1="520" y1="804" x2="556" y2="804" stroke="#1E2540" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ═══════════════════════════════════════
+       ENDPOINT 7: GET /files/:id/audit
+  ═══════════════════════════════════════ -->
+  <rect x="40" y="896" width="480" height="60" rx="5" fill="#12151F" stroke="#1E2130" stroke-width="1"/>
+  <rect x="40" y="896" width="52" height="60" rx="5" fill="#4FC3F722"/>
+  <rect x="86" y="896" width="6" height="60" fill="#12151F"/>
+  <text x="66" y="924" class="method-text" fill="#4FC3F7" text-anchor="middle">GET</text>
+  <text x="108" y="917" class="endpoint-name">Audit Log</text>
+  <text x="108" y="935" class="endpoint-path">/files/:id/audit?user_id=…&amp;page=1&amp;page_size=20</text>
+
+  <rect x="560" y="896" width="400" height="28" rx="4" fill="#00D4AA0D" stroke="#00D4AA22" stroke-width="1"/>
+  <text x="572" y="915" class="response-code" fill="#00D4AA">200</text>
+  <text x="608" y="915" class="response-label" fill="#00D4AA">OK</text>
+  <text x="640" y="915" class="response-detail">{ items[{ id, file_id, user_id, generated_at, expires_at, client_ip }], total, page, page_size }</text>
+  <rect x="560" y="928" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="943" class="response-code" fill="#FF5C5C">401</text>
+  <text x="608" y="943" class="response-label" fill="#FF8A8A">Unauthorized</text>
+  <text x="700" y="943" class="response-detail">Missing or invalid API key</text>
+  <rect x="560" y="952" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="967" class="response-code" fill="#FF5C5C">403</text>
+  <text x="608" y="967" class="response-label" fill="#FF8A8A">Forbidden</text>
+  <text x="680" y="967" class="response-detail">user_id does not own this file</text>
+  <rect x="560" y="976" width="400" height="20" rx="4" fill="#FF5C5C0D" stroke="#FF5C5C22" stroke-width="1"/>
+  <text x="572" y="991" class="response-code" fill="#FF5C5C">404</text>
+  <text x="608" y="991" class="response-label" fill="#FF8A8A">Not Found</text>
+  <text x="680" y="991" class="response-detail">File does not exist</text>
+  <line x1="520" y1="926" x2="556" y2="926" stroke="#1E2540" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ═══════════════════════════════════════
+       ENDPOINT 8: GET /health
+  ═══════════════════════════════════════ -->
+  <rect x="40" y="1016" width="480" height="60" rx="5" fill="#12151F" stroke="#1E2130" stroke-width="1"/>
+  <rect x="40" y="1016" width="52" height="60" rx="5" fill="#AAAAAA22"/>
+  <rect x="86" y="1016" width="6" height="60" fill="#12151F"/>
+  <text x="66" y="1044" class="method-text" fill="#AAAAAA" text-anchor="middle">GET</text>
+  <text x="108" y="1037" class="endpoint-name">Health Check  <tspan fill="#7B8CFF" font-size="10">PUBLIC</tspan></text>
+  <text x="108" y="1055" class="endpoint-path">/health</text>
+
+  <rect x="560" y="1016" width="400" height="28" rx="4" fill="#00D4AA0D" stroke="#00D4AA22" stroke-width="1"/>
+  <text x="572" y="1035" class="response-code" fill="#00D4AA">200</text>
+  <text x="608" y="1035" class="response-label" fill="#00D4AA">OK</text>
+  <text x="640" y="1035" class="response-detail">{ status: "healthy", database: "connected" }</text>
+  <line x1="520" y1="1046" x2="556" y2="1046" stroke="#1E2540" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ─── TOKEN FORMAT BOX ─── -->
+  <line x1="40" y1="1100" x2="960" y2="1100" stroke="#1A1E2E" stroke-width="1"/>
+  <rect x="40" y="1116" width="920" height="200" rx="6" fill="#0D1020" stroke="#1A1E2E" stroke-width="1"/>
+  <text x="60" y="1140" class="token-title">SIGNED TOKEN VERIFICATION — /download FLOW</text>
+
+  <!-- Token format -->
+  <text x="60" y="1165" class="token-code">base64url( file_id + exp )  +  "."  +  base64url( HMAC-SHA256( payload, SIGNING_SECRET ) )</text>
+
+  <line x1="60" y1="1176" x2="940" y2="1176" stroke="#1A1E2E" stroke-width="1"/>
+
+  <!-- Steps -->
+  <text x="60" y="1196" class="step-num">1.</text>
+  <text x="76" y="1196" class="step-text">Split token on  "."  →  payload_b64,  signature_b64</text>
+
+  <text x="60" y="1213" class="step-num">2.</text>
+  <text x="76" y="1213" class="step-text">Recompute  HMAC-SHA256( payload_b64, SIGNING_SECRET )</text>
+
+  <text x="60" y="1230" class="step-num">3.</text>
+  <text x="76" y="1230" class="step-text">Compare using  hmac.compare_digest()  (constant-time)    →    mismatch</text>
+  <rect x="660" y="1219" width="80" height="16" rx="3" fill="#FF5C5C18" stroke="#FF5C5C33" stroke-width="1"/>
+  <text x="666" y="1231" font-size="10" fill="#FF5C5C" font-weight="bold">403 Forbidden</text>
+
+  <text x="60" y="1248" class="step-num">4.</text>
+  <text x="76" y="1248" class="step-text">Decode payload_b64  →  extract  exp  (unix epoch)</text>
+
+  <text x="60" y="1265" class="step-num">5.</text>
+  <text x="76" y="1265" class="step-text">Compare  exp  vs  datetime.now(UTC)                         →    expired</text>
+  <rect x="660" y="1254" width="60" height="16" rx="3" fill="#FF5C5C18" stroke="#FF5C5C33" stroke-width="1"/>
+  <text x="666" y="1266" font-size="10" fill="#FF5C5C" font-weight="bold">410 Gone</text>
+
+  <text x="60" y="1282" class="step-num">6.</text>
+  <text x="76" y="1282" class="step-text">Lookup  file_id  in DB  →  stream file</text>
+  <rect x="330" y="1271" width="80" height="16" rx="3" fill="#00D4AA18" stroke="#00D4AA33" stroke-width="1"/>
+  <text x="336" y="1283" font-size="10" fill="#00D4AA" font-weight="bold">200 Stream</text>
+  <text x="420" y="1282" class="step-text">or missing from disk</text>
+  <rect x="540" y="1271" width="60" height="16" rx="3" fill="#FF5C5C18" stroke="#FF5C5C33" stroke-width="1"/>
+  <text x="546" y="1283" font-size="10" fill="#FF5C5C" font-weight="bold">404 Gone</text>
+
+  <!-- ─── LEGEND ─── -->
+  <line x1="40" y1="1336" x2="960" y2="1336" stroke="#1A1E2E" stroke-width="1"/>
+
+  <!-- Method legend -->
+  <rect x="40" y="1352" width="28" height="14" rx="2" fill="#81C78422"/>
+  <text x="44" y="1363" font-size="9" fill="#81C784" font-weight="bold">POST</text>
+  <rect x="100" y="1352" width="24" height="14" rx="2" fill="#4FC3F722"/>
+  <text x="104" y="1363" font-size="9" fill="#4FC3F7" font-weight="bold">GET</text>
+  <rect x="150" y="1352" width="28" height="14" rx="2" fill="#EF9A9A22"/>
+  <text x="154" y="1363" font-size="9" fill="#EF9A9A" font-weight="bold">DEL</text>
+
+  <!-- Response legend -->
+  <rect x="240" y="1352" width="14" height="14" rx="2" fill="#00D4AA22"/>
+  <text x="260" y="1363" class="legend-text">2xx — success</text>
+  <rect x="360" y="1352" width="14" height="14" rx="2" fill="#FF5C5C22"/>
+  <text x="380" y="1363" class="legend-text">4xx — client error</text>
+
+  <!-- Side effect legend -->
+  <circle cx="500" cy="1359" r="5" fill="#FFB347"/>
+  <text x="512" y="1363" class="legend-text">side effect (audit event written)</text>
+
+  <!-- Public legend -->
+  <rect x="700" y="1352" width="14" height="14" rx="2" fill="#7B8CFF22" stroke="#7B8CFF44" stroke-width="1"/>
+  <text x="720" y="1363" class="legend-text">public endpoint (no API key)</text>
+
+  <!-- Footer -->
+  <text x="40" y="1405" font-size="9" fill="#2A3050">Secure File Ingestion &amp; Signed URL Service — FastAPI / PostgreSQL / HMAC-SHA256</text>
+  <text x="960" y="1405" font-size="9" fill="#2A3050" text-anchor="end">v1.0</text>
+</svg>

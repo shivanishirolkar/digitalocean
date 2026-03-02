@@ -18,6 +18,8 @@ from sqlalchemy import text
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api.routes.health import router as health_router
+from app.api.routes.file_routes import router as file_router
+from app.api.routes.download_routes import router as download_router
 from app.config import get_settings
 from app.core.logger import setup_logging
 from app.database import Base, engine
@@ -87,6 +89,8 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(health_router)
+app.include_router(file_router)
+app.include_router(download_router)
 
 
 # ---------------------------------------------------------------------------
