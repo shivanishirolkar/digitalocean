@@ -23,7 +23,7 @@ pkill -f "uvicorn app.main:app" 2>/dev/null || true
 sleep 1
 
 echo "==> Starting uvicorn..."
-uvicorn app.main:app --reload --port 8000 &
+uvicorn app.main:app --reload --port 8000 --no-access-log &
 sleep 2
 
 echo "==> Running checks..."

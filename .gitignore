@@ -6,6 +6,12 @@ __pycache__/
 # Uploads directory
 uploads/
 
+# Log file
+logs
+
+# Markdown files (temporary)
+*.md
+
 # C extensions
 *.so
 
