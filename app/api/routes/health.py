@@ -7,6 +7,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
+from app.repositories.file_repository import get_file_counts
 
 logger = logging.getLogger(__name__)
 
@@ -29,11 +30,10 @@ async def health(db: AsyncSession = Depends(get_db)) -> dict:
 
 
 @router.get("/metrics")
-async def metrics() -> dict:
-    """Return file-store metrics (placeholder).
+async def metrics(db: AsyncSession = Depends(get_db)) -> dict:
+    """Return file-store aggregate metrics.
 
     Returns:
-        dict: Hardcoded zeros until wired to the database.
+        dict: total_files, total_size_bytes, total_signed_urls.
     """
-    # TODO: replace with get_file_counts(db)
-    return {"total_files": 0, "total_size_bytes": 0, "total_signed_urls": 0}
+    return await get_file_counts(db)
