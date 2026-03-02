@@ -1,18 +1,31 @@
 """Health and metrics endpoints."""
 
-from fastapi import APIRouter
+import logging
+
+from fastapi import APIRouter, Depends
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.database import get_db
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
 
 @router.get("/health")
-async def health() -> dict:
-    """Liveness check endpoint.
+async def health(db: AsyncSession = Depends(get_db)) -> dict:
+    """Liveness check with database connectivity test.
 
     Returns:
-        dict: ``{"status": "ok"}`` when the service is running.
+        dict: Status and database connection state.
     """
-    return {"status": "ok"}
+    try:
+        await db.execute(text("SELECT 1"))
+        return {"status": "healthy", "database": "connected"}
+    except Exception as exc:
+        logger.exception("health check database failure")
+        return {"status": "unhealthy", "database": "unreachable"}
 
 
 @router.get("/metrics")

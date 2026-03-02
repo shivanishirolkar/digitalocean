@@ -5,40 +5,44 @@ request logging middleware, global exception handlers, and a root
 health-check endpoint.
 """
 
+import asyncio
 import logging
+import os
 import time
 from contextlib import asynccontextmanager
-from typing import Any, Optional
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
+from sqlalchemy import text
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app.core.logger import setup_logging
 from app.api.routes.health import router as health_router
+from app.config import get_settings
+from app.core.logger import setup_logging
+from app.database import Base, engine
+from app.schemas.file_schema import ErrorResponse
+
+# Import models so SQLAlchemy registers them before create_all
+import app.models.file_model  # noqa: F401
+import app.models.audit_model  # noqa: F401
 
 setup_logging()
 
 logger = logging.getLogger(__name__)
 
 
-class ErrorResponse(BaseModel):
-    """Standard error response body.
-
-    Attributes:
-        error: A short error description string.
-        details: Optional validation error details.
-    """
-
-    error: str
-    details: Optional[Any] = None
-
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Manage application startup and shutdown lifecycle.
+
+    On startup:
+    - Retry database connection up to 5 times (2-second backoff).
+    - Create all tables via ``Base.metadata.create_all``.
+    - Ensure the upload directory exists.
+
+    On shutdown:
+    - Dispose of the database engine.
 
     Args:
         app: The FastAPI application instance.
@@ -46,9 +50,38 @@ async def lifespan(app: FastAPI):
     Yields:
         None: Control is yielded to the application between startup and shutdown.
     """
-    # Startup logic will go here (database connection, upload dir creation)
+    # Database connection with retry
+    for attempt in range(1, 6):
+        try:
+            async with engine.begin() as conn:
+                await conn.execute(text("SELECT 1"))
+            logger.info("database connected", extra={"attempt": attempt})
+            break
+        except Exception:
+            logger.warning(
+                "database connection failed",
+                extra={"attempt": attempt, "max_attempts": 5},
+            )
+            if attempt == 5:
+                logger.error("database unreachable after 5 attempts")
+                raise
+            await asyncio.sleep(2)
+
+    # Create tables
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    logger.info("database tables created")
+
+    # Ensure upload directory exists
+    settings = get_settings()
+    os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
+    logger.info("upload directory ready", extra={"path": settings.UPLOAD_DIR})
+
     yield
-    # Shutdown logic will go here (close database connections)
+
+    # Shutdown
+    await engine.dispose()
+    logger.info("database engine disposed")
 
 
 app = FastAPI(lifespan=lifespan)
@@ -98,9 +131,8 @@ _STATUS_MAP = {
     401: "unauthorized",
     403: "forbidden",
     404: "not found",
-    409: "file already exists",
     410: "link expired",
-    429: "too many requests",
+    413: "file too large",
 }
 
 

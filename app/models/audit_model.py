@@ -32,7 +32,6 @@ class SignedUrlAudit(Base):
         UUID(as_uuid=True),
         ForeignKey("files.id", ondelete="CASCADE"),
         nullable=False,
-        index=True,
     )
     user_id: Mapped[str] = mapped_column(String(255), nullable=False)
     ttl_seconds: Mapped[int] = mapped_column(Integer, nullable=False)

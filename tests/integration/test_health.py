@@ -12,11 +12,11 @@ async def test_root_returns_200(client):
 
 
 @pytest.mark.asyncio
-async def test_health_returns_200(client):
-    """GET /health returns 200 with {"status": "ok"}."""
+async def test_health_database_connected(client):
+    """GET /health returns 200 with database connected."""
     response = await client.get("/health")
     assert response.status_code == 200
-    assert response.json() == {"status": "ok"}
+    assert response.json() == {"status": "healthy", "database": "connected"}
 
 
 @pytest.mark.asyncio
