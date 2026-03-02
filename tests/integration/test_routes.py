@@ -133,6 +133,35 @@ async def test_upload_file_no_file_attached(client: AsyncClient):
 
 
 @pytest.mark.asyncio
+async def test_upload_file_too_large(client: AsyncClient):
+    """POST /files with file exceeding MAX_FILE_SIZE returns 413.
+    Exercises the file-too-large error path through the route layer."""
+    from app.config import get_settings
+
+    settings = get_settings()
+    oversized = b"x" * (settings.MAX_FILE_SIZE + 1)
+    resp = await client.post(
+        "/files",
+        data={"user_id": "test_user"},
+        files={"file": ("big.bin", oversized, "application/octet-stream")},
+    )
+    assert resp.status_code == 413
+    assert resp.json() == {"error": "file too large"}
+
+
+@pytest.mark.asyncio
+async def test_upload_empty_file(client: AsyncClient):
+    """POST /files with an empty file body returns 422.
+    Exercises the empty-file validation through the route layer."""
+    resp = await client.post(
+        "/files",
+        data={"user_id": "test_user"},
+        files={"file": ("empty.txt", b"", "text/plain")},
+    )
+    assert resp.status_code == 422
+
+
+@pytest.mark.asyncio
 async def test_list_files_missing_user_id(client: AsyncClient):
     """GET /files with no user_id query param returns 422."""
     resp = await client.get("/files")
