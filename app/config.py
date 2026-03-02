@@ -18,7 +18,7 @@ class Settings(BaseSettings):
         LOG_LEVEL: Python logging level name. Defaults to "INFO".
         API_KEY: Secret key for X-API-Key header authentication. Defaults to "changeme".
         SIGNING_SECRET: HMAC-SHA256 key for signed URL tokens. Required.
-        UPLOAD_DIR: Directory path for storing uploaded files. Defaults to "./uploads".
+        UPLOAD_DIR: Directory path for storing uploaded files. Defaults to "/data/uploads".
         MAX_FILE_SIZE: Maximum allowed upload size in bytes. Defaults to 10 MB.
     """
 
@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     API_KEY: str = "changeme"
     SIGNING_SECRET: str
-    UPLOAD_DIR: str = "./uploads"
+    UPLOAD_DIR: str = "/data/uploads"
     MAX_FILE_SIZE: int = 10485760
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}

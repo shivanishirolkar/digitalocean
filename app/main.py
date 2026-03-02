@@ -96,8 +96,10 @@ async def log_requests(request: Request, call_next):
 
 _STATUS_MAP = {
     401: "unauthorized",
+    403: "forbidden",
     404: "not found",
     409: "file already exists",
+    410: "link expired",
     429: "too many requests",
 }
 
