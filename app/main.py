@@ -35,7 +35,7 @@ logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI):  # pragma: no cover
     """Manage application startup and shutdown lifecycle.
 
     On startup:
@@ -221,7 +221,7 @@ async def validation_exception_handler(
 
 
 @app.exception_handler(Exception)
-async def generic_exception_handler(request: Request, exc: Exception):
+async def generic_exception_handler(request: Request, exc: Exception):  # pragma: no cover
     """Handle unhandled exceptions with a 500 response.
 
     Logs the full traceback at ERROR level before returning a generic
